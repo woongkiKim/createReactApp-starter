@@ -1,21 +1,34 @@
 import { useState, useEffect } from "react";
 
-function Hello() {
-  useEffect(() => {
-    console.log("created :)");
-    // 여기서 Destory 하면 내뱉은 CleanUp function
-    return () => console.log("Destoryed :(");
-  }, []);
-  return <h1>Hello</h1>;
-}
-
 function App() {
-  const [showing, setShowing] = useState(false);
-  const onClick = () => setShowing((prev) => !prev);
+  // To do에 대한 State
+  const [toDo, setTodo] = useState("");
+  // To do에 대한 함수
+  const onChange = (event) => setTodo(event.target.value);
+  // To do Submit에 대한 함수
+  const onSubmit = (event) => {
+    event.preventDefault();
+    if (toDo === "") {
+      return;
+    }
+    setToDoList((currentArray) => [toDo, ...currentArray]); // 사용법임. "..."은 currentArray를 가져오란 뜻
+    setTodo("");
+  };
+  // toDo를 받을 수 있는 array
+  const [toDoList, setToDoList] = useState([]);
+  console.log(toDoList);
   return (
     <div>
-      {showing ? <Hello /> : null}
-      <button onClick={onClick}>{showing ? "Hide" : "Show"}</button>
+      <h1>My To Do list ({toDoList.length})</h1>
+      <form onSubmit={onSubmit}>
+        <input
+          onChange={onChange}
+          value={toDo}
+          type="text"
+          placeholder="Write your to do"
+        />
+        <button>Add to Do</button>
+      </form>
     </div>
   );
 }
