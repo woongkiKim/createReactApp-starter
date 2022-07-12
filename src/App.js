@@ -12,11 +12,12 @@ function App() {
       return;
     }
     setToDoList((currentArray) => [toDo, ...currentArray]); // 사용법임. "..."은 currentArray를 가져오란 뜻
-    setTodo("");
+    setTodo(""); // 의미: setTodo의 값이 "" 이면, toDo가 비어있는 String 값이 될거라는 의미
   };
   // toDo를 받을 수 있는 array
   const [toDoList, setToDoList] = useState([]);
   console.log(toDoList);
+  console.log(toDoList.map((item, index) => <li key={index}>{item}</li>));
   return (
     <div>
       <h1>My To Do list ({toDoList.length})</h1>
@@ -29,6 +30,12 @@ function App() {
         />
         <button>Add to Do</button>
       </form>
+      <hr />
+      <ul>
+        {toDoList.map((item, index) => (
+          <li key={index}>{item}</li>
+        ))}
+      </ul>
     </div>
   );
 }
