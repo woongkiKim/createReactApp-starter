@@ -1,38 +1,78 @@
 import { useState, useEffect } from "react";
 
 function App() {
-  // 코인가격 나열
+  // 로딩 완료시 화면 보이기
   const [loading, setLoading] = useState(true);
-  // API "한번만" 실행
-  useEffect(() => {
-    fetch("https://api.coinpaprika.com/v1/tickers")
+  // 화면에 뿌리기 위해
+  const [movies, setMovies] = useState([]);
+
+  // 오래된 방법 then
+  /* useEffect(() => {
+    // API 가져오기
+    fetch(
+      `https://yts.mx/api/v2/list_movies.json?minimum_rating=9&sort_by=year`
+    )
       .then((response) => response.json())
+      // 로딩이 끝나고 함수 2개 실행: 영화데이터 로딩, 로딩 끝나면 h
       .then((json) => {
-        setCoins(json);
+        setMovies(json.data.movies);
         setLoading(false);
-      }); // 결과치를 setCoins에 넣은다음, coins 얻기가 끝났으면, loading을 false로 바꿔야함
+      });
   }, []);
-  // 받은 결과값을 컴포넌트에 어떻게 보여줄까? => 결과값을 State에 넣기
-  const [coins, setCoins] = useState([]); // coins는 화면에 뿌릴려면 {coins}
+  console.log(movies); */
+
+  // async await 방법1
+  /* 
+    const getMovies = async () => {
+    const response = await fetch(
+      `https://yts.mx/api/v2/list_movies.json?minimum_rating=9&sort_by=year`
+    );
+    const json = await response.json();
+    setMovies(json.data.movies);
+    setLoading(false);
+  };
+  useEffect(() => {
+    getMovies();
+  }, []);
+  */
+
+  // ######### 방법1과 방법2와 오래된 방법인 then #########
+  // async await 방법2
+  const getMovies = async () => {
+    const json = await (
+      await fetch(
+        `https://yts.mx/api/v2/list_movies.json?minimum_rating=9&sort_by=year`
+      )
+    ).json();
+    setMovies(json.data.movies);
+    setLoading(false);
+  };
+  useEffect(() => {
+    getMovies();
+  }, []);
+
   return (
     <div>
-      {/* Loading 중에는 안보이기 */}
-      <h1>The Coins! {loading ? "" : `(${coins.length})`}</h1>
-      {/* {loading ? <strong>Loading...</strong> : null} */}
-      {/* ########### if 문에 값 넣기 ########## */}
       {loading ? (
         <strong>Loading...</strong>
       ) : (
         <ul>
-          {coins.map((coin, index) => (
-            <li key={index}>
-              {coin.name} ({coin.symbol}): ${coin.quotes.USD.price} USD
-            </li>
+          {movies.map((movie, id) => (
+            <div key={id}>
+              <h2>
+                {movie.title} ({movie.year})
+              </h2>
+              <img src={movie.medium_cover_image} />
+              <p>{movie.summary}</p>
+              <ul>
+                {movie.genres.map((g) => (
+                  <li key={g}>{g}</li>
+                ))}
+              </ul>
+            </div>
           ))}
         </ul>
       )}
-
-      {/* coins 화면 뿌리기  */}
     </div>
   );
 }
