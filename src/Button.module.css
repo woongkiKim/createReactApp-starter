@@ -1,0 +1,5 @@
+/* 전체에 적용하고 싶으면 파일명을 styles.css 생성 후 index.js의 import로 전체 적용된다.*/
+.btn {
+  color: white;
+  background-color: tomato;
+}
