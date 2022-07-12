@@ -1,41 +1,38 @@
 import { useState, useEffect } from "react";
 
 function App() {
-  // To do에 대한 State
-  const [toDo, setTodo] = useState("");
-  // To do에 대한 함수
-  const onChange = (event) => setTodo(event.target.value);
-  // To do Submit에 대한 함수
-  const onSubmit = (event) => {
-    event.preventDefault();
-    if (toDo === "") {
-      return;
-    }
-    setToDoList((currentArray) => [toDo, ...currentArray]); // 사용법임. "..."은 currentArray를 가져오란 뜻
-    setTodo(""); // 의미: setTodo의 값이 "" 이면, toDo가 비어있는 String 값이 될거라는 의미
-  };
-  // toDo를 받을 수 있는 array
-  const [toDoList, setToDoList] = useState([]);
-  console.log(toDoList);
-  console.log(toDoList.map((item, index) => <li key={index}>{item}</li>));
+  // 코인가격 나열
+  const [loading, setLoading] = useState(true);
+  // API "한번만" 실행
+  useEffect(() => {
+    fetch("https://api.coinpaprika.com/v1/tickers")
+      .then((response) => response.json())
+      .then((json) => {
+        setCoins(json);
+        setLoading(false);
+      }); // 결과치를 setCoins에 넣은다음, coins 얻기가 끝났으면, loading을 false로 바꿔야함
+  }, []);
+  // 받은 결과값을 컴포넌트에 어떻게 보여줄까? => 결과값을 State에 넣기
+  const [coins, setCoins] = useState([]); // coins는 화면에 뿌릴려면 {coins}
   return (
     <div>
-      <h1>My To Do list ({toDoList.length})</h1>
-      <form onSubmit={onSubmit}>
-        <input
-          onChange={onChange}
-          value={toDo}
-          type="text"
-          placeholder="Write your to do"
-        />
-        <button>Add to Do</button>
-      </form>
-      <hr />
-      <ul>
-        {toDoList.map((item, index) => (
-          <li key={index}>{item}</li>
-        ))}
-      </ul>
+      {/* Loading 중에는 안보이기 */}
+      <h1>The Coins! {loading ? "" : `(${coins.length})`}</h1>
+      {/* {loading ? <strong>Loading...</strong> : null} */}
+      {/* ########### if 문에 값 넣기 ########## */}
+      {loading ? (
+        <strong>Loading...</strong>
+      ) : (
+        <ul>
+          {coins.map((coin, index) => (
+            <li key={index}>
+              {coin.name} ({coin.symbol}): ${coin.quotes.USD.price} USD
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {/* coins 화면 뿌리기  */}
     </div>
   );
 }
