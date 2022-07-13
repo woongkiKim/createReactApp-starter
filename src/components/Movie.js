@@ -1,23 +1,15 @@
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 // movies 데이터를 App에서 가져올걸, props로 받기
 // 즉, movie component를 부모 콤포넌트로부터 받아온다고 하는것임
 function Movie({ coverImg, title, year, summary, genres }) {
   return (
-    // <div key={id}>
     <div>
-      {/* <h2>
-        {movie.title} ({movie.year})
-      </h2>
-      <img src={movie.medium_cover_image} />
-      <p>{movie.summary}</p>
-      <ul>
-        {movie.genres.map((g) => (
-          <li key={g}>{g}</li>
-        ))}
-      </ul> */}
       <h2>
-        {title} ({year})
+        <Link to="/movie">
+          {title} ({year})
+        </Link>
       </h2>
       <img src={coverImg} alt={title} />
       <p>{summary}</p>
