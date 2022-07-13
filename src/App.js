@@ -8,7 +8,7 @@ function App() {
       {/* Switch: Route;(movies/123/delete)를 찾음 */}
       <Switch>
         {/* 스위치 안에 라우트 적고, 그 안에 컴포넌트 적기 */}
-        <Route path="/movie">
+        <Route path="/movie/:id">
           <Detail />
         </Route>
         <Route path="/">

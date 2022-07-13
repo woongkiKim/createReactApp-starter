@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 
 // movies 데이터를 App에서 가져올걸, props로 받기
 // 즉, movie component를 부모 콤포넌트로부터 받아온다고 하는것임
-function Movie({ coverImg, title, year, summary, genres }) {
+function Movie({ id, coverImg, title, year, summary, genres }) {
   return (
     <div>
       <h2>
-        <Link to="/movie">
+        <Link to={`/movie/${id}`}>
           {title} ({year})
         </Link>
       </h2>
@@ -23,6 +23,7 @@ function Movie({ coverImg, title, year, summary, genres }) {
 }
 
 Movie.propTypes = {
+  id: PropTypes.number.isRequired,
   coverImg: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   year: PropTypes.number.isRequired,
