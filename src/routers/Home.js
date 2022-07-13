@@ -1,6 +1,7 @@
 // Home route는 App 컴포넌트 전체를 갖고 있을 예정
 import { useState, useEffect } from "react";
 import Movie from "../components/Movie";
+import styles from "./Home.module.css";
 
 function Home() {
   // 로딩 완료시 화면 보이기
@@ -22,11 +23,13 @@ function Home() {
   }, []);
 
   return (
-    <div>
+    <div className={styles.container}>
       {loading ? (
-        <strong>Loading...</strong>
+        <div className={styles.loader}>
+          <span>로딩중입니다...</span>
+        </div>
       ) : (
-        <ul>
+        <div className={styles.movies}>
           {movies.map((movie, id) => (
             <Movie
               key={movie.id}
@@ -38,7 +41,7 @@ function Home() {
               genres={movie.genres}
             />
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );
