@@ -20,6 +20,7 @@ function Home() {
   };
   useEffect(() => {
     getMovies();
+    // console.log("home_movies:", movies);
   }, []);
 
   return (
